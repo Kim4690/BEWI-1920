@@ -4,35 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
-<!-- Global init -->
 <script>
 window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- DIN ORIGINAL JS -->
-<script src="https://kim4690.github.io/BEWI-1920/BygTek_20V3.js"></script>
+<!-- 🔥 BRUG DIN EKSISTERENDE JS (samme navn som før) -->
+<script src="BygTek_20V3.js"></script>
 
 <style>
 body {
   margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  background:#fff;
 }
 
-/* Wrapper */
+/* wrapper */
 #animation_container {
   width:100%;
   max-width:1920px;
+  margin:0 auto;
 }
 
-/* Canvas */
+/* canvas */
 canvas {
   width:100%;
   height:auto;
@@ -50,11 +44,14 @@ canvas {
 <script>
 var canvas = document.getElementById("canvas");
 
-AdobeAn.bootstrapCallback(function(compId) {
+function init() {
 
-  var comp = AdobeAn.getComposition(compId);
+  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
 
-  if (!comp) return;
+  if (!comp) {
+    setTimeout(init, 100);
+    return;
+  }
 
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
@@ -82,15 +79,29 @@ AdobeAn.bootstrapCallback(function(compId) {
 
     stage.addChild(exportRoot);
 
-    // 🔥 RESPONSIVE FIX (DET VIGTIGE)
-    AdobeAn.makeResponsive(true, 'both', true, 1, [canvas]);
+    // 🔥 RESPONSIVE (simpel og stabil)
+    function resize() {
+      var w = 1920;
+      var h = 600;
+      var iw = window.innerWidth;
+
+      var scale = iw / w;
+
+      canvas.style.width = iw + "px";
+      canvas.style.height = (h * scale) + "px";
+
+      stage.scaleX = scale;
+      stage.scaleY = scale;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
 
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
-    // klik
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
@@ -101,8 +112,9 @@ AdobeAn.bootstrapCallback(function(compId) {
   });
 
   loader.loadManifest(lib.properties.manifest);
+}
 
-});
+window.onload = init;
 </script>
 
 </body>
