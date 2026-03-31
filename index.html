@@ -11,7 +11,7 @@ window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- 🔥 BRUG DIN EKSISTERENDE JS (samme navn som før) -->
+<!-- 🔥 DIN RIGTIGE FIL (IKKE ÆNDRE NAVN) -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -43,16 +43,14 @@ canvas {
 
 <script>
 var canvas = document.getElementById("canvas");
+var stage, exportRoot;
 
-function init() {
+AdobeAn.bootstrapCallback(function(compId) {
 
-  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
+  // 🔥 IGNORER ANDRE ID’er (meget vigtigt)
+  if (compId !== "18A209EB448844418D59406351C547B6") return;
 
-  if (!comp) {
-    setTimeout(init, 100);
-    return;
-  }
-
+  var comp = AdobeAn.getComposition(compId);
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
 
@@ -74,34 +72,20 @@ function init() {
       });
     }
 
-    var exportRoot = new lib.Untitled1();
-    var stage = new lib.Stage(canvas);
+    exportRoot = new lib.Untitled1();
+    stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
 
-    // 🔥 RESPONSIVE (simpel og stabil)
-    function resize() {
-      var w = 1920;
-      var h = 600;
-      var iw = window.innerWidth;
-
-      var scale = iw / w;
-
-      canvas.style.width = iw + "px";
-      canvas.style.height = (h * scale) + "px";
-
-      stage.scaleX = scale;
-      stage.scaleY = scale;
-    }
-
-    window.addEventListener("resize", resize);
-    resize();
+    // 🔥 RESPONSIVE (Adobe korrekt måde)
+    AdobeAn.makeResponsive(true, 'both', true, 1, [canvas]);
 
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
+    // klik
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
@@ -112,9 +96,8 @@ function init() {
   });
 
   loader.loadManifest(lib.properties.manifest);
-}
 
-window.onload = init;
+});
 </script>
 
 </body>
