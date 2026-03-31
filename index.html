@@ -86,8 +86,9 @@ function init() {
 
     var exportRoot = new lib.Untitled1();
     var stage = new lib.Stage(canvas);
-
     stage.addChild(exportRoot);
+
+    AdobeAn.compositionLoaded(lib.properties.id);
 
     createjs.Ticker.framerate = lib.properties.fps;
 
