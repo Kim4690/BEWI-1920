@@ -4,8 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="BygTek_mar26.js"></script>
+
+<!-- Global init -->
+<script>
+window.createjs = window.createjs || {};
+window.AdobeAn = window.AdobeAn || {};
+</script>
+
+<!-- DIN ORIGINAL JS -->
+<script src="https://kim4690.github.io/BEWI-1920/BygTek_20V3.js"></script>
 
 <style>
 body {
@@ -13,16 +22,17 @@ body {
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
+  height:100vh;
+  background:#fff;
 }
 
-/* wrapper */
+/* Wrapper */
 #animation_container {
   width:100%;
   max-width:1920px;
 }
 
-/* canvas */
+/* Canvas */
 canvas {
   width:100%;
   height:auto;
@@ -38,14 +48,14 @@ canvas {
 </div>
 
 <script>
-var canvas, stage, exportRoot, anim_container;
+var canvas = document.getElementById("canvas");
 
-function init() {
+AdobeAn.bootstrapCallback(function(compId) {
 
-  canvas = document.getElementById("canvas");
-  anim_container = document.getElementById("animation_container");
+  var comp = AdobeAn.getComposition(compId);
 
-  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
+  if (!comp) return;
+
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
 
@@ -67,13 +77,13 @@ function init() {
       });
     }
 
-    exportRoot = new lib.Untitled1();
-    stage = new lib.Stage(canvas);
+    var exportRoot = new lib.Untitled1();
+    var stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
 
-    // 🔥 RESPONSIVE (den vigtige!)
-    AdobeAn.makeResponsive(true,'both',true,1,[canvas]);
+    // 🔥 RESPONSIVE FIX (DET VIGTIGE)
+    AdobeAn.makeResponsive(true, 'both', true, 1, [canvas]);
 
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
@@ -91,10 +101,8 @@ function init() {
   });
 
   loader.loadManifest(lib.properties.manifest);
-}
 
-// 🔥 START
-window.onload = init;
+});
 </script>
 
 </body>
