@@ -39,9 +39,9 @@ lib.properties = {
 	height: 600,
 	fps: 30,
 	manifest: [
-		{src:"https://kim4690.github.io/BEWI-300/images/CachedBmp_5.png", id:"CachedBmp_5"},
-		{src:"https://kim4690.github.io/BEWI-300/images/BygTek_20V3_atlas_1.png", id:"BygTek_20V3_atlas_1"}
-	]
+	{src:"images/CachedBmp_5.png", id:"CachedBmp_5"},
+    {src:"images/BygTek_20V3_atlas_1.png", id:"BygTek_20V3_atlas_1"}
+]
 };
 
 // Stage
