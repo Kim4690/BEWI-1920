@@ -4,14 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script src="BygTek_mar26.js"></script>
 
-<!-- Adobe init -->
+<style>
+body {
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+#animation_container {
+  width:100%;
+  max-width:1920px;
+}
+
+canvas {
+  width:100%;
+  height:auto;
+  display:block;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="animation_container">
+  <canvas id="canvas" width="1920" height="600"></canvas>
+</div>
+
 <script>
 var canvas, stage, exportRoot, anim_container;
 
 function init() {
+
   canvas = document.getElementById("canvas");
   anim_container = document.getElementById("animation_container");
 
@@ -42,46 +71,30 @@ function init() {
 
     stage.addChild(exportRoot);
 
+    // 🔥 RESPONSIVE (den vigtige!)
+    AdobeAn.makeResponsive(true,'both',true,1,[canvas]);
+
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
+
+    // klik
+    canvas.onclick = function(){
+      window.open(
+        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+        "_blank"
+      );
+    };
+
   });
 
   loader.loadManifest(lib.properties.manifest);
 }
+
+// 🔥 START
+window.onload = init;
 </script>
-
-<!-- DIN JS -->
-<script src="BygTek_mar26.js"></script>
-
-<style>
-body {
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-
-#animation_container {
-  width:100%;
-  max-width:1920px;
-}
-
-canvas {
-  width:100%;
-  height:auto;
-  display:block;
-}
-</style>
-</head>
-
-<body onload="init();">
-
-<div id="animation_container">
-  <canvas id="canvas" width="1920" height="600"></canvas>
-</div>
 
 </body>
 </html>
