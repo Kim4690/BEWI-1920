@@ -15,6 +15,7 @@ function init() {
 
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
   var lib = comp.getLibrary();
+  var ss = comp.getSpriteSheet();
 
   var loader = new createjs.LoadQueue(false);
 
@@ -27,8 +28,7 @@ function init() {
 
   loader.addEventListener("complete", function(){
 
-    var ss = comp.getSpriteSheet();
-
+    // 🔥 KRITISK – binder sprites korrekt
     for (var i = 0; i < lib.ssMetadata.length; i++) {
       ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
         images: [lib.images[lib.ssMetadata[i].name]],
@@ -39,18 +39,10 @@ function init() {
     exportRoot = new lib.Untitled1();
     stage = new lib.Stage(canvas);
 
-    stage.enableMouseOver();
     stage.addChild(exportRoot);
 
-    // 🔥 KRITISK FIX
-    createjs.Ticker.removeAllEventListeners();
     createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.addEventListener("tick", function() {
-      stage.update();
-    });
-
-    // 🔥 SIKRER DEN IKKE STOPPER
-    stage.tickEnabled = true;
+    createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
@@ -64,12 +56,16 @@ function init() {
 
   });
 
-  loader.loadManifest(lib.properties.manifest);
+  // 🔥 KRITISK – loader ALLE assets korrekt
+  loader.loadManifest([
+    {src:"images/BygTek_20V3_atlas_1.png", id:"BygTek_20V3_atlas_1"},
+    {src:"images/CachedBmp_5.png", id:"CachedBmp_5"}
+  ]);
 }
 
 window.onload = init;
 </script>
-
+  
 <style>
 body {
   margin:0;
