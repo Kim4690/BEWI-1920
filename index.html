@@ -81,16 +81,17 @@ function init() {
 
     // 🔥 ENESTE FIX = RESPONSIVE
     function resize() {
-      var w = 1920;
-      var h = 600;
-      var scale = window.innerWidth / w;
+  var ratio = Math.min(
+    window.innerWidth / 1920,
+    window.innerHeight / 600
+  );
 
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = (h * scale) + "px";
+  canvas.style.width = (1920 * ratio) + "px";
+  canvas.style.height = (600 * ratio) + "px";
 
-      stage.scaleX = scale;
-      stage.scaleY = scale;
-    }
+  stage.scaleX = ratio;
+  stage.scaleY = ratio;
+}
 
     window.addEventListener("resize", resize);
     resize();
@@ -99,6 +100,12 @@ function init() {
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
+    canvas.onclick = function(){
+  window.open(
+    "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+    "_blank"
+  );
+};
 
   });
 
