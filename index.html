@@ -91,9 +91,7 @@ function init() {
 
     createjs.Ticker.framerate = lib.properties.fps;
 
-    createjs.Ticker.addEventListener("tick", function(){
-      stage.update();
-    });
+    createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
