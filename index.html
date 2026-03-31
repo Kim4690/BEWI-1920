@@ -83,6 +83,26 @@ function init() {
 
     stage.addChild(exportRoot);
 
+// 🔥 FORCE TEXT2 (rigtig måde)
+setTimeout(function() {
+
+  function findText2(obj) {
+    if (!obj) return;
+
+    if (obj.constructor && obj.constructor.name === "text2") {
+      obj._off = false;
+      obj.alpha = 1;
+    }
+
+    if (obj.children) {
+      obj.children.forEach(findText2);
+    }
+  }
+
+  findText2(exportRoot);
+
+}, 1500);
+
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
