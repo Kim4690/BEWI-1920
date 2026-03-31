@@ -301,8 +301,8 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/CachedBmp_5.png", id:"CachedBmp_5"},
-		{src:"images/BygTek_20V3_atlas_1.png", id:"BygTek_20V3_atlas_1"}
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<script src="BygTek_mar26.js"></script>
 	],
 	preloads: []
 };
