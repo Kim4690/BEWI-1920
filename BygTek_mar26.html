@@ -1,84 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="da">
 <head>
 <meta charset="UTF-8">
-<meta name="authoring-tool" content="Adobe_Animate_CC">
-<title>BygTek_20V3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="BygTek_mar26.js"></script>
 
+<!-- 🔥 VIGTIG GLOBAL INIT -->
 <script>
-var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-
-function init() {
-	canvas = document.getElementById("canvas");
-	anim_container = document.getElementById("animation_container");
-	dom_overlay_container = document.getElementById("dom_overlay_container");
-
-	var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
-	var lib = comp.getLibrary();
-
-	var loader = new createjs.LoadQueue(false);
-	loader.addEventListener("fileload", function(evt){ handleFileLoad(evt, comp); });
-	loader.addEventListener("complete", function(evt){ handleComplete(evt, comp); });
-
-	loader.loadManifest(lib.properties.manifest);
-}
-
-function handleFileLoad(evt, comp) {
-	var images = comp.getImages();	
-	if (evt && evt.item.type === "image") { 
-		images[evt.item.id] = evt.result; 
-	}	
-}
-
-function handleComplete(evt, comp) {
-
-	var lib = comp.getLibrary();
-	var ss = comp.getSpriteSheet();
-	var queue = evt.target;
-	var ssMetadata = lib.ssMetadata;
-
-	for (var i = 0; i < ssMetadata.length; i++) {
-		ss[ssMetadata[i].name] = new createjs.SpriteSheet({
-			images: [queue.getResult(ssMetadata[i].name)],
-			frames: ssMetadata[i].frames
-		});
-	}
-
-	exportRoot = new lib.Untitled1();
-	stage = new lib.Stage(canvas);
-
-	// START animation
-	fnStartAnimation = function() {
-		stage.addChild(exportRoot);
-		createjs.Ticker.framerate = lib.properties.fps;
-		createjs.Ticker.addEventListener("tick", stage);
-	};
-
-	// Kør animation
-	fnStartAnimation();
-
-	// 👉 Gør banner klikbart
-	canvas.style.cursor = "pointer";
-
-	canvas.addEventListener("click", function() {
-		window.open(window.clickTag || window.clickTAG || "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering%20", "_blank");
-	});
-
-	// Responsive
-	AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);	
-	AdobeAn.compositionLoaded(lib.properties.id);
-}
+window.createjs = window.createjs || {};
+window.AdobeAn = window.AdobeAn || {};
 </script>
 
+<!-- DIN JS FIL -->
+<script src="https://kim4690.github.io/BEWI-1920/BygTek_mar26.js"></script>
+
+<style>
+/* 🔥 RESET */
+body {
+  margin:0;
+  padding:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#fff;
+}
+
+/* 🔥 WRAPPER (RESPONSIV) */
+#banner-wrapper {
+  position:relative;
+  width:100%;
+  max-width:1920px;
+}
+
+/* 🔥 CANVAS */
+canvas {
+  width:100%;
+  height:auto;
+  display:block;
+  cursor:pointer;
+}
+</style>
 </head>
 
-<body onload="init();" style="margin:0px;">
-	<div id="animation_container" style="background-color:#FFFFFF; width:1920px; height:600px">
-		<canvas id="canvas" width="1920" height="600" style="position:absolute; display:block; background-color:#FFFFFF;"></canvas>
-		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:600px; position:absolute; left:0px; top:0px;"></div>
-	</div>
+<body>
+
+<div id="banner-wrapper">
+  <canvas id="canvas" width="1920" height="600"></canvas>
+</div>
+
+<script>
+var canvas = document.getElementById("canvas");
+var stage, exportRoot;
+
+function init() {
+
+  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
+
+  if (!comp) {
+    console.log("⏳ venter på composition...");
+    setTimeout(init, 100);
+    return;
+  }
+
+  var lib = comp.getLibrary();
+  var loader = new createjs.LoadQueue(false);
+
+  // 🔥 LOAD IMAGES
+  loader.addEventListener("fileload", function(evt){
+    if (evt.item.type === "image") {
+      lib.images = lib.images || {};
+      lib.images[evt.item.id] = evt.result;
+    }
+  });
+
+  // 🔥 NÅR ALT ER LOADED
+  loader.addEventListener("complete", function(){
+
+    var ss = comp.getSpriteSheet();
+
+    for (var i = 0; i < lib.ssMetadata.length; i++) {
+      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
+        images: [lib.images[lib.ssMetadata[i].name]],
+        frames: lib.ssMetadata[i].frames
+      });
+    }
+
+    exportRoot = new lib.Untitled1();
+    stage = new lib.Stage(canvas);
+
+    stage.addChild(exportRoot);
+
+    // 🔥 GØR STAGE GLOBAL (vigtigt til responsive)
+    canvas.stage = stage;
+    window.stage = stage;
+
+    createjs.Ticker.framerate = lib.properties.fps;
+    createjs.Ticker.addEventListener("tick", stage);
+
+    exportRoot.gotoAndPlay(0);
+
+    // 🔥 CLICK
+    canvas.onclick = function(){
+      window.open(
+        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+        "_blank"
+      );
+    };
+
+  });
+
+  loader.loadManifest(lib.properties.manifest);
+}
+
+// 🔥 START
+window.onload = init;
+</script>
+
 </body>
 </html>
