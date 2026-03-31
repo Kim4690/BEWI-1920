@@ -11,7 +11,6 @@ window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- DIN ORIGINAL JS -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -19,14 +18,12 @@ body {
   margin:0;
 }
 
-/* wrapper */
 #container {
   width:100%;
   max-width:1920px;
   margin:0 auto;
 }
 
-/* canvas */
 canvas {
   width:100%;
   height:auto;
@@ -79,40 +76,19 @@ function init() {
 
     stage.addChild(exportRoot);
 
-    createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.addEventListener("tick", stage);
-
-    exportRoot.gotoAndPlay(0);
-
-    // 🔥 klik
-    canvas.onclick = function(){
-      window.open(
-        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
-        "_blank"
-      );
-    };
-
-  });
-
-  loader.loadManifest(lib.properties.manifest);
-}
-
-window.onload = init;
-</script>
-  
-    // 🔥 ENESTE FIX = RESPONSIVE
+    // 🔥 RESPONSIVE (REN OG STABIL)
     function resize() {
-  var ratio = Math.min(
-    window.innerWidth / 1920,
-    window.innerHeight / 600
-  );
+      var ratio = Math.min(
+        window.innerWidth / 1920,
+        window.innerHeight / 600
+      );
 
-  canvas.style.width = (1920 * ratio) + "px";
-  canvas.style.height = (600 * ratio) + "px";
+      canvas.style.width = (1920 * ratio) + "px";
+      canvas.style.height = (600 * ratio) + "px";
 
-  stage.scaleX = ratio;
-  stage.scaleY = ratio;
-}
+      stage.scaleX = ratio;
+      stage.scaleY = ratio;
+    }
 
     window.addEventListener("resize", resize);
     resize();
@@ -121,12 +97,14 @@ window.onload = init;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
+
+    // klik
     canvas.onclick = function(){
-  window.open(
-    "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
-    "_blank"
-  );
-};
+      window.open(
+        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+        "_blank"
+      );
+    };
 
   });
 
