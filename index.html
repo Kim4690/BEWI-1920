@@ -4,23 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
-<!-- 🔥 VIGTIG GLOBAL INIT -->
 <script>
 window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- DIN JS FIL -->
-<script src="https://kim4690.github.io/BEWI-1920/BygTek_mar26.js"></script>
+<script src="BygTek_mar26.js"></script>
 
 <style>
-/* 🔥 RESET */
 body {
   margin:0;
-  padding:0;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -28,16 +23,9 @@ body {
   background:#fff;
 }
 
-/* 🔥 WRAPPER (RESPONSIV) */
-#banner-wrapper {
-  position:relative;
-  width:100%;
-  max-width:1920px;
-}
-
-/* 🔥 CANVAS */
 canvas {
   width:100%;
+  max-width:1920px;
   height:auto;
   display:block;
   cursor:pointer;
@@ -47,28 +35,18 @@ canvas {
 
 <body>
 
-<div id="banner-wrapper">
-  <canvas id="canvas" width="1920" height="600"></canvas>
-</div>
+<canvas id="canvas" width="1920" height="600"></canvas>
 
 <script>
 var canvas = document.getElementById("canvas");
 var stage, exportRoot;
 
-function init() {
+AdobeAn.bootstrapCallback(function() {
 
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
-
-  if (!comp) {
-    console.log("⏳ venter på composition...");
-    setTimeout(init, 100);
-    return;
-  }
-
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
 
-  // 🔥 LOAD IMAGES
   loader.addEventListener("fileload", function(evt){
     if (evt.item.type === "image") {
       lib.images = lib.images || {};
@@ -76,7 +54,6 @@ function init() {
     }
   });
 
-  // 🔥 NÅR ALT ER LOADED
   loader.addEventListener("complete", function(){
 
     var ss = comp.getSpriteSheet();
@@ -93,7 +70,7 @@ function init() {
 
     stage.addChild(exportRoot);
 
-    // 🔥 GØR STAGE GLOBAL (vigtigt til responsive)
+    // 🔥 VIGTIG (gør global)
     canvas.stage = stage;
     window.stage = stage;
 
@@ -102,7 +79,7 @@ function init() {
 
     exportRoot.gotoAndPlay(0);
 
-    // 🔥 CLICK
+    // klik
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
@@ -113,10 +90,8 @@ function init() {
   });
 
   loader.loadManifest(lib.properties.manifest);
-}
 
-// 🔥 START
-window.onload = init;
+});
 </script>
 
 </body>
