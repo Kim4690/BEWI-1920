@@ -11,7 +11,7 @@ window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- 🔥 DIN RIGTIGE FIL (IKKE ÆNDRE NAVN) -->
+<!-- DIN ORIGINAL JS -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -20,7 +20,7 @@ body {
 }
 
 /* wrapper */
-#animation_container {
+#container {
   width:100%;
   max-width:1920px;
   margin:0 auto;
@@ -37,20 +37,22 @@ canvas {
 
 <body>
 
-<div id="animation_container">
+<div id="container">
   <canvas id="canvas" width="1920" height="600"></canvas>
 </div>
 
 <script>
 var canvas = document.getElementById("canvas");
-var stage, exportRoot;
 
-AdobeAn.bootstrapCallback(function(compId) {
+function init() {
 
-  // 🔥 IGNORER ANDRE ID’er (meget vigtigt)
-  if (compId !== "18A209EB448844418D59406351C547B6") return;
+  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
 
-  var comp = AdobeAn.getComposition(compId);
+  if (!comp) {
+    setTimeout(init, 100);
+    return;
+  }
+
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
 
@@ -72,32 +74,38 @@ AdobeAn.bootstrapCallback(function(compId) {
       });
     }
 
-    exportRoot = new lib.Untitled1();
-    stage = new lib.Stage(canvas);
+    var exportRoot = new lib.Untitled1();
+    var stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
 
-    // 🔥 RESPONSIVE (Adobe korrekt måde)
-    AdobeAn.makeResponsive(true, 'both', true, 1, [canvas]);
+    // 🔥 ENESTE FIX = RESPONSIVE
+    function resize() {
+      var w = 1920;
+      var h = 600;
+      var scale = window.innerWidth / w;
+
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = (h * scale) + "px";
+
+      stage.scaleX = scale;
+      stage.scaleY = scale;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
 
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
-    // klik
-    canvas.onclick = function(){
-      window.open(
-        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
-        "_blank"
-      );
-    };
-
   });
 
   loader.loadManifest(lib.properties.manifest);
+}
 
-});
+window.onload = init;
 </script>
 
 </body>
