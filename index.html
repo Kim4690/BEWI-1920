@@ -62,87 +62,40 @@ function init() {
     }
   });
 
-  loader.addEventListener("complete", function(){
-
-    var ss = comp.getSpriteSheet();
-
-    for (var i = 0; i < lib.ssMetadata.length; i++) {
-      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
-        images: [lib.images[lib.ssMetadata[i].name]],
-        frames: lib.ssMetadata[i].frames
-      });
-    }
-
-    exportRoot = new lib.Untitled1();
-    stage = new lib.Stage(canvas);
-
-    stage.addChild(exportRoot);
-
-    // 🔥 DEN VIGTIGE – ADOBE INIT
-    AdobeAn.compositionLoaded(lib.properties.id);
-
-    // 🔥 DEN HER MANGLER HOS DIG
-    AdobeAn.bootstrapCallback(function(){
-      exportRoot.gotoAndPlay(0);
-    });
-
-    createjs.Ticker.framerate = lib.properties.fps;
-
-    createjs.Ticker.addEventListener("tick", function(evt){
-      stage.update(evt);
-    });
-
-    // klik
-    canvas.onclick = function(){
-      window.open(
-        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
-        "_blank"
-      );
-    };
-
-  });
+  loader.addEventListener("complete", handleComplete);
 
   loader.loadManifest(lib.properties.manifest);
 }
 
-window.onload = init;
-</script>
+function handleComplete() {
 
-    var ss = comp.getSpriteSheet();
+  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
+  var lib = comp.getLibrary();
+  var ss = comp.getSpriteSheet();
 
-    for (var i = 0; i < lib.ssMetadata.length; i++) {
-      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
-        images: [lib.images[lib.ssMetadata[i].name]],
-        frames: lib.ssMetadata[i].frames
-      });
-    }
-
-    exportRoot = new lib.Untitled1();
-    stage = new lib.Stage(canvas);
-
-    stage.addChild(exportRoot);
-
-    // 🔥 DET HER ER HELE FORSKELLEN
-    createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.timingMode = createjs.Ticker.RAF;
-
-    createjs.Ticker.addEventListener("tick", function(evt){
-      stage.update(evt);
+  for (var i = 0; i < lib.ssMetadata.length; i++) {
+    ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
+      images: [lib.images[lib.ssMetadata[i].name]],
+      frames: lib.ssMetadata[i].frames
     });
+  }
 
-    exportRoot.gotoAndPlay(0);
+  exportRoot = new lib.Untitled1();
+  stage = new lib.Stage(canvas);
 
-    // klik
-    canvas.onclick = function(){
-      window.open(
-        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
-        "_blank"
-      );
-    };
+  stage.addChild(exportRoot);
 
-  });
+  createjs.Ticker.framerate = lib.properties.fps;
+  createjs.Ticker.addEventListener("tick", stage);
 
-  loader.loadManifest(lib.properties.manifest);
+  exportRoot.gotoAndPlay(0);
+
+  canvas.onclick = function(){
+    window.open(
+      "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+      "_blank"
+    );
+  };
 }
 
 window.onload = init;
