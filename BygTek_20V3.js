@@ -233,6 +233,12 @@ if (reversed == null) { reversed = false; }
 	props.reversed = reversed;
 	cjs.MovieClip.apply(this,[props]);
 
+		// Baggrund
+	this.instance_6 = new lib.LinkedFile();
+	this.instance_6.setTransform(-13.75,-244.5,0.9709,0.9709);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(300));
+
 	// Logo
 	this.instance = new lib.ClipGroup();
 	this.instance.setTransform(1769.05,533.2,1,1,0,0,0,113.4,37.8);
@@ -270,12 +276,6 @@ if (reversed == null) { reversed = false; }
 	this.instance_5.compositeOperation = "multiply";
 
 	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(1).to({regX:428.2,regY:589.1,x:1850.5,y:330.55},0).wait(29).to({scaleX:1.3898,x:1822.4},0).wait(1).to({scaleX:1.7796,x:1794.3},0).wait(1).to({scaleX:2.1694,x:1766.25},0).wait(1).to({scaleX:2.5592,x:1738.15},0).wait(1).to({scaleX:2.949,x:1710.05},0).wait(1).to({scaleX:3.3388,x:1681.95},0).wait(1).to({scaleX:3.7285,x:1653.85},0).wait(1).to({scaleX:4.1183,x:1625.85},0).wait(1).to({scaleX:4.5081,x:1597.8},0).wait(1).to({scaleX:4.8979,x:1569.7},0).wait(1).to({scaleX:5.2877,x:1541.6},0).wait(1).to({scaleX:5.6775,x:1513.5},0).wait(1).to({scaleX:6.0673,x:1485.4},0).wait(1).to({scaleX:6.4571,x:1457.3},0).wait(1).to({scaleX:6.8469,x:1429.25},0).wait(256));
-
-	// Baggrund
-	this.instance_6 = new lib.LinkedFile();
-	this.instance_6.setTransform(-13.75,-244.5,0.9709,0.9709);
-
-	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(300));
 
 	// stageBackground
 	this.shape = new cjs.Shape();
