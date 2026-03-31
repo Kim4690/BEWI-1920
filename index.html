@@ -4,16 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
-<!-- Global init -->
 <script>
 window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
-<!-- DIN ORIGINAL JS (URØRT) -->
+<!-- DIN JS -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -26,17 +24,13 @@ body {
   background:#fff;
 }
 
-/* 🔥 RESPONSIV WRAPPER */
-#container {
+#animation_container {
   width:100%;
   max-width:1920px;
   aspect-ratio:1920 / 600;
-  position:relative;
 }
 
-/* 🔥 CANVAS FYLDER 100% */
 canvas {
-  position:absolute;
   width:100%;
   height:100%;
   display:block;
@@ -47,14 +41,16 @@ canvas {
 
 <body>
 
-<div id="container">
+<div id="animation_container">
   <canvas id="canvas" width="1920" height="600"></canvas>
 </div>
 
 <script>
-var canvas = document.getElementById("canvas");
+var canvas, stage, exportRoot;
 
 function init() {
+
+  canvas = document.getElementById("canvas");
 
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
 
@@ -84,19 +80,37 @@ function init() {
       });
     }
 
-    var exportRoot = new lib.Untitled1();
-    var stage = new lib.Stage(canvas);
+    exportRoot = new lib.Untitled1();
+    stage = new lib.Stage(canvas);
+
     stage.addChild(exportRoot);
 
+    // 🔥 VIGTIG
     AdobeAn.compositionLoaded(lib.properties.id);
 
-    createjs.Ticker.framerate = lib.properties.fps;
+    function resize() {
+      var ratio = Math.min(
+        window.innerWidth / 1920,
+        window.innerHeight / 600
+      );
 
+      canvas.style.width = (1920 * ratio) + "px";
+      canvas.style.height = (600 * ratio) + "px";
+
+      stage.scaleX = ratio;
+      stage.scaleY = ratio;
+
+      stage.update();
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
     exportRoot.gotoAndPlay(0);
 
-    // 🔥 klik hele banner
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
