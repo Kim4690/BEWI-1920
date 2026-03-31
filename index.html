@@ -4,13 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- CreateJS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
+<!-- Global init -->
 <script>
 window.createjs = window.createjs || {};
 window.AdobeAn = window.AdobeAn || {};
 </script>
 
+<!-- DIN ORIGINAL JS (URØRT) -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -20,9 +23,10 @@ body {
   justify-content:center;
   align-items:center;
   min-height:100vh;
+  background:#fff;
 }
 
-/* 🔥 RESPONSIV */
+/* 🔥 RESPONSIV WRAPPER */
 #container {
   width:100%;
   max-width:1920px;
@@ -30,17 +34,13 @@ body {
   position:relative;
 }
 
+/* 🔥 CANVAS FYLDER 100% */
 canvas {
   position:absolute;
   width:100%;
   height:100%;
-}
-
-/* 🔥 behold canvas FIXED */
-canvas {
-  width:100%;
-  height:auto;
   display:block;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -90,6 +90,7 @@ function init() {
     stage.addChild(exportRoot);
 
     createjs.Ticker.framerate = lib.properties.fps;
+
     createjs.Ticker.addEventListener("tick", function(){
       stage.update();
     });
