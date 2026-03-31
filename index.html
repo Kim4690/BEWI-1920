@@ -43,16 +43,13 @@ canvas {
 
 <script>
 var canvas = document.getElementById("canvas");
+var stage, exportRoot;
 
-function init() {
+AdobeAn.bootstrapCallback(function(compId) {
 
-  var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
+  if (compId !== "18A209EB448844418D59406351C547B6") return;
 
-  if (!comp) {
-    setTimeout(init, 100);
-    return;
-  }
-
+  var comp = AdobeAn.getComposition(compId);
   var lib = comp.getLibrary();
   var loader = new createjs.LoadQueue(false);
 
@@ -74,11 +71,30 @@ function init() {
       });
     }
 
-    var exportRoot = new lib.Untitled1();
-    var stage = new lib.Stage(canvas);
+    exportRoot = new lib.Untitled1();
+    stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
 
+    createjs.Ticker.framerate = lib.properties.fps;
+    createjs.Ticker.addEventListener("tick", stage);
+
+    exportRoot.gotoAndPlay(0);
+
+    // klik
+    canvas.onclick = function(){
+      window.open(
+        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+        "_blank"
+      );
+    };
+
+  });
+
+  loader.loadManifest(lib.properties.manifest);
+
+});
+</script>
     // 🔥 ENESTE FIX = RESPONSIVE
     function resize() {
   var ratio = Math.min(
