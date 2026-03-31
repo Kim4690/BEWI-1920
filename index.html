@@ -52,6 +52,7 @@ function init() {
 
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
   var lib = comp.getLibrary();
+
   var loader = new createjs.LoadQueue(false);
 
   loader.addEventListener("fileload", function(evt){
@@ -62,6 +63,50 @@ function init() {
   });
 
   loader.addEventListener("complete", function(){
+
+    var ss = comp.getSpriteSheet();
+
+    for (var i = 0; i < lib.ssMetadata.length; i++) {
+      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
+        images: [lib.images[lib.ssMetadata[i].name]],
+        frames: lib.ssMetadata[i].frames
+      });
+    }
+
+    exportRoot = new lib.Untitled1();
+    stage = new lib.Stage(canvas);
+
+    stage.addChild(exportRoot);
+
+    // 🔥 DEN VIGTIGE – ADOBE INIT
+    AdobeAn.compositionLoaded(lib.properties.id);
+
+    // 🔥 DEN HER MANGLER HOS DIG
+    AdobeAn.bootstrapCallback(function(){
+      exportRoot.gotoAndPlay(0);
+    });
+
+    createjs.Ticker.framerate = lib.properties.fps;
+
+    createjs.Ticker.addEventListener("tick", function(evt){
+      stage.update(evt);
+    });
+
+    // klik
+    canvas.onclick = function(){
+      window.open(
+        "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
+        "_blank"
+      );
+    };
+
+  });
+
+  loader.loadManifest(lib.properties.manifest);
+}
+
+window.onload = init;
+</script>
 
     var ss = comp.getSpriteSheet();
 
