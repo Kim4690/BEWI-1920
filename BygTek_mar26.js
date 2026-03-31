@@ -99,7 +99,7 @@ if (reversed == null) { reversed = false; }
 	this.instance = new lib.CachedBmp_5();
 	this.instance.setTransform(0,0,0.5,0.5);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(300));
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(200));
 
 	this._renderFirstFrame();
 
@@ -122,7 +122,7 @@ if (reversed == null) { reversed = false; }
 	this.instance = new lib.CachedBmp_4();
 	this.instance.setTransform(0,0,0.5,0.5);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(300));
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(200));
 
 	this._renderFirstFrame();
 
