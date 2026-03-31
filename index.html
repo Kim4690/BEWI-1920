@@ -112,7 +112,10 @@ setTimeout(function() {
     resize();
 
     createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.addEventListener("tick", stage);
+    createjs.Ticker.addEventListener("tick", function(){
+  stage.update();
+  console.log(exportRoot.currentFrame);
+});
 
     exportRoot.gotoAndPlay(0);
 
