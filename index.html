@@ -88,17 +88,25 @@ setTimeout(function() {
     
     // 🔥 RESPONSIVE (REN OG STABIL)
     function resize() {
-      var ratio = Math.min(
-        window.innerWidth / 1920,
-        window.innerHeight / 600
-      );
+  var w = 1920;
+  var h = 600;
 
-      canvas.style.width = (1920 * ratio) + "px";
-      canvas.style.height = (600 * ratio) + "px";
+  var iw = window.innerWidth;
+  var ih = window.innerHeight;
 
-      stage.scaleX = ratio;
-      stage.scaleY = ratio;
-    }
+  var scale = Math.min(iw / w, ih / h);
+
+  canvas.width = w * scale;
+  canvas.height = h * scale;
+
+  canvas.style.width = (w * scale) + "px";
+  canvas.style.height = (h * scale) + "px";
+
+  stage.scaleX = scale;
+  stage.scaleY = scale;
+
+  stage.update();
+}
 
     window.addEventListener("resize", resize);
     resize();
