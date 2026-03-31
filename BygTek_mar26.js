@@ -1,19 +1,19 @@
 (function (cjs, an) {
 
 var p;
-var lib={};var ss={};var img={};
+var lib = {}; var ss = {}; var img = {};
 
 lib.ssMetadata = [
 	{name:"BygTek_20V3_atlas_1", frames: [[0,1335,1888,336],[1116,1673,448,142],[579,1673,535,135],[0,1673,577,173],[0,0,2000,1333]]}
 ];
 
-// 🔧 MovieClip base
+// MovieClip base
 (lib.AnMovieClip = function(){
 	this.actionFrames = [];
 	this.ignorePause = false;
 }).prototype = p = new cjs.MovieClip();
 
-// 🔧 Sprites
+// Sprites
 (lib.CachedBmp_5 = function() { this.initialize(img.CachedBmp_5); }).prototype = p = new cjs.Bitmap();
 (lib.CachedBmp_4 = function() { this.initialize(ss["BygTek_20V3_atlas_1"]); this.gotoAndStop(0); }).prototype = p = new cjs.Sprite();
 (lib.CachedBmp_3 = function() { this.initialize(ss["BygTek_20V3_atlas_1"]); this.gotoAndStop(1); }).prototype = p = new cjs.Sprite();
@@ -21,17 +21,18 @@ lib.ssMetadata = [
 (lib.CachedBmp_1 = function() { this.initialize(ss["BygTek_20V3_atlas_1"]); this.gotoAndStop(3); }).prototype = p = new cjs.Sprite();
 (lib.LinkedFile = function() { this.initialize(ss["BygTek_20V3_atlas_1"]); this.gotoAndStop(4); }).prototype = p = new cjs.Sprite();
 
-// 🔧 Stage content (kortet men ORIGINAL animation bevares)
-(lib.Untitled1 = function() {
+// 🔥 ORIGINAL STAGE (bevar animation!)
+(lib.Untitled1 = function(mode,startPosition,loop,reversed) {
 	cjs.MovieClip.apply(this,[{}]);
 
 	this.instance = new lib.LinkedFile();
 	this.instance.setTransform(-13.75,-244.5,0.9709,0.9709);
 
 	this.timeline.addTween(cjs.Tween.get(this.instance).wait(300));
+
 }).prototype = p = new lib.AnMovieClip();
 
-// 🔧 Properties
+// Properties
 lib.properties = {
 	id: '18A209EB448844418D59406351C547B6',
 	width: 1920,
@@ -43,12 +44,12 @@ lib.properties = {
 	]
 };
 
-// 🔧 Stage
+// Stage
 (lib.Stage = function(canvas) {
 	createjs.Stage.call(this, canvas);
 }).prototype = p = new createjs.Stage();
 
-// 🔧 Composition
+// Composition
 an.compositions = an.compositions || {};
 an.compositions['18A209EB448844418D59406351C547B6'] = {
 	getLibrary: function() { return lib; },
@@ -60,7 +61,7 @@ an.getComposition = function(id) {
 	return an.compositions[id];
 };
 
-// 🔥 BOOTSTRAP (VIGTIG FOR JS-ONLY)
+// Bootstrap
 an.bootcompsLoaded = an.bootcompsLoaded || [];
 an.bootstrapListeners = an.bootstrapListeners || [];
 
@@ -80,10 +81,10 @@ an.compositionLoaded = function(id) {
 	}
 };
 
-// 🔥 RESPONSIVE FIX (DET VIGTIGE)
-(function() {
+// 🔥 RESPONSIVE (DEN KORREKTE!)
+(function () {
 
-  function applyResponsive() {
+  function setupResponsive() {
 
     var canvas = document.querySelector("canvas");
     if (!canvas) return;
@@ -94,27 +95,44 @@ an.compositionLoaded = function(id) {
     var w = 1920;
     var h = 600;
 
-    function resize() {
+    function resizeCanvas() {
+
       var iw = window.innerWidth;
       var scale = iw / w;
+
+      canvas.width = w;
+      canvas.height = h;
 
       canvas.style.width = iw + "px";
       canvas.style.height = (h * scale) + "px";
 
       stage.scaleX = scale;
       stage.scaleY = scale;
+
+      stage.update();
     }
 
-    window.addEventListener("resize", resize);
-    resize();
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    console.log("✅ 1920 banner responsive virker");
 
   }
 
   var tries = 0;
-  var interval = setInterval(function(){
-    applyResponsive();
+  var interval = setInterval(function () {
+
+    var canvas = document.querySelector("canvas");
+    var stage = canvas && (canvas.stage || window.stage);
+
+    if (stage) {
+      setupResponsive();
+      clearInterval(interval);
+    }
+
     tries++;
-    if (tries > 20) clearInterval(interval);
+    if (tries > 30) clearInterval(interval);
+
   }, 200);
 
 })();
