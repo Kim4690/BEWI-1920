@@ -26,7 +26,6 @@ body {
 #animation_container {
   width:100%;
   max-width:1920px;
-  aspect-ratio:1920 / 600;
 }
 
 canvas {
@@ -45,16 +44,14 @@ canvas {
 </div>
 
 <script>
-var canvas, stage, exportRoot, anim_container;
+var canvas, stage, exportRoot;
 
 function init() {
 
   canvas = document.getElementById("canvas");
-  anim_container = document.getElementById("animation_container");
 
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
   var lib = comp.getLibrary();
-
   var loader = new createjs.LoadQueue(false);
 
   loader.addEventListener("fileload", function(evt){
@@ -64,7 +61,7 @@ function init() {
     }
   });
 
-  loader.addEventListener("complete", function(evt){
+  loader.addEventListener("complete", function(){
 
     var ss = comp.getSpriteSheet();
 
@@ -78,56 +75,17 @@ function init() {
     exportRoot = new lib.Untitled1();
     stage = new lib.Stage(canvas);
 
-    // 🔥 DET HER ER KRITISK (manglede før)
-    AdobeAn.compositionLoaded(lib.properties.id);
-
     stage.addChild(exportRoot);
 
-// 🔥 FORCE TEXT2 (rigtig måde)
-setTimeout(function() {
-
-  function findText2(obj) {
-    if (!obj) return;
-
-    if (obj.constructor && obj.constructor.name === "text2") {
-      obj._off = false;
-      obj.alpha = 1;
-    }
-
-    if (obj.children) {
-      obj.children.forEach(findText2);
-    }
-  }
-
-  findText2(exportRoot);
-
-}, 1500);
-
+    // 🔥 DET HER ER HELE FORSKELLEN
     createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.addEventListener("tick", function(event){
-  stage.update(event);
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
-});
+
+    createjs.Ticker.addEventListener("tick", function(evt){
+      stage.update(evt);
+    });
 
     exportRoot.gotoAndPlay(0);
-
-    // RESPONSIVE (simpel og korrekt)
-    function resize() {
-      var w = 1920;
-      var h = 600;
-
-      var iw = window.innerWidth;
-      var ratio = iw / w;
-
-      canvas.style.width = iw + "px";
-      canvas.style.height = (h * ratio) + "px";
-
-      stage.scaleX = ratio;
-      stage.scaleY = ratio;
-    }
-
-    window.addEventListener("resize", resize);
-    resize();
 
     // klik
     canvas.onclick = function(){
