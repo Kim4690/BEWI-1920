@@ -245,7 +245,7 @@ if (reversed == null) { reversed = false; }
 	this.instance_1.alpha = 0;
 	this.instance_1._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(130).to({_off:false},0).to({alpha:1},9).wait(161));
+	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(60).to({_off:false},0).to({alpha:1},9).wait(200));
 
 	// CTA
 	this.instance_2 = new lib.CachedBmp_2();
