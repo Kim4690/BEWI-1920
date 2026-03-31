@@ -302,7 +302,7 @@ lib.properties = {
 	opacity: 1.00,
 	manifest: [
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-	<script src="BygTek_mar26.js"></script>
+	<script src="BygTek_20V3.js"></script>
 	],
 	preloads: []
 };
