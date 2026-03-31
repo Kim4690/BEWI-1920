@@ -16,14 +16,20 @@ window.AdobeAn = window.AdobeAn || {};
 <style>
 body {
   margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#fff;
 }
 
+/* 🔥 wrapper styrer responsiv */
 #container {
   width:100%;
   max-width:1920px;
-  margin:0 auto;
 }
 
+/* 🔥 behold canvas FIXED */
 canvas {
   width:100%;
   height:auto;
@@ -76,48 +82,14 @@ function init() {
 
     stage.addChild(exportRoot);
 
-    // 🔥 FORCE text2 synlig (fix Adobe bug)
-setTimeout(function() {
-  exportRoot.children.forEach(function(child){
-    if(child instanceof lib.text2){
-      child._off = false;
-      child.alpha = 1;
-    }
-  });
-}, 1000);
-    
-    // 🔥 RESPONSIVE (REN OG STABIL)
-function resize() {
-
-  var w = 1920;
-  var h = 600;
-
-  var iw = window.innerWidth;
-
-  var scale = iw / w;
-
-  canvas.width = w;
-  canvas.height = h;
-
-  canvas.style.width = iw + "px";
-  canvas.style.height = (h * scale) + "px";
-
-  stage.scaleX = scale;
-  stage.scaleY = scale;
-
-}
-    window.addEventListener("resize", resize);
-    resize();
-
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", function(){
-  stage.update();
-  console.log(exportRoot.currentFrame);
-});
+      stage.update();
+    });
 
     exportRoot.gotoAndPlay(0);
 
-    // klik
+    // 🔥 klik hele banner
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
