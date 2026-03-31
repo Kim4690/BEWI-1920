@@ -106,6 +106,7 @@ setTimeout(function() {
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", function(event){
   stage.update(event);
+    createjs.Ticker.timingMode = createjs.Ticker.RAF;
 });
 
     exportRoot.gotoAndPlay(0);
