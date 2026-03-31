@@ -84,6 +84,20 @@ function init() {
     stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
+    
+    // 🔥 FORCE text2 visible
+setTimeout(function(){
+
+  exportRoot.children.forEach(function(child){
+
+    if (child.constructor.name === "text2") {
+      child._off = false;
+      child.alpha = 1;
+    }
+
+  });
+
+}, 1000);
 
     // 🔥 VIGTIG
     AdobeAn.compositionLoaded(lib.properties.id);
