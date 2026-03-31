@@ -87,27 +87,25 @@ setTimeout(function() {
 }, 1000);
     
     // 🔥 RESPONSIVE (REN OG STABIL)
-    function resize() {
+function resize() {
+
   var w = 1920;
   var h = 600;
 
   var iw = window.innerWidth;
-  var ih = window.innerHeight;
 
-  var scale = Math.min(iw / w, ih / h);
+  var scale = iw / w;
 
-  canvas.width = w * scale;
-  canvas.height = h * scale;
+  canvas.width = w;
+  canvas.height = h;
 
-  canvas.style.width = (w * scale) + "px";
+  canvas.style.width = iw + "px";
   canvas.style.height = (h * scale) + "px";
 
   stage.scaleX = scale;
   stage.scaleY = scale;
 
-  stage.update();
 }
-
     window.addEventListener("resize", resize);
     resize();
 
