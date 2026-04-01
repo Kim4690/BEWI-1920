@@ -65,20 +65,25 @@ function init() {
   lib.images[evt.item.id] = evt.result;
 
   // 🔥 DEN HER ER DEN VIGTIGE
-  img = img || {};
+  var img = window.img || {};
+  window.img = img;
   img[evt.item.id] = evt.result;
-}
+  }
   });
 
-  loader.addEventListener("complete", function(){
+ loader.addEventListener("fileload", function(evt){
+  if (evt.item.type === "image") {
 
-    for (var i = 0; i < lib.ssMetadata.length; i++) {
-      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
-        images: [lib.images[lib.ssMetadata[i].name]],
-        frames: lib.ssMetadata[i].frames
-      });
+    lib.images = lib.images || {};
+    lib.images[evt.item.id] = evt.result;
+
+    // korrekt global binding
+    var img = window.img || {};
+    window.img = img;
+    img[evt.item.id] = evt.result;
     }
-
+  });
+    
     exportRoot = new lib.Untitled1();
     stage = new lib.Stage(canvas);
 
