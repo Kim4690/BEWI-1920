@@ -6,7 +6,7 @@
 
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
-<!-- DIN ORIGINAL JS -->
+<!-- DIN ORIGINAL JS (RØR IKKE) -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -20,7 +20,7 @@ body {
 }
 
 #animation_container {
-  position:relative; /* 🔥 VIGTIG */
+  position:relative;
   width:100%;
   max-width:1920px;
 }
@@ -32,18 +32,7 @@ canvas {
   cursor:pointer;
 }
 
-/* 🔥 START OVERLAY (blå) */
-#start-overlay{
-  position:absolute;
-  inset:0;
-  background:#26485F;
-  z-index:10;
-  pointer-events:none;
-  opacity:1;
-  transition:opacity 0.4s ease;
-}
-
-/* 🔥 TEXT2 FIX (som du allerede har) */
+/* TEXT2 FIX */
 #text2-fix{
   position:absolute;
   left:50%;
@@ -68,15 +57,12 @@ canvas {
 <div id="animation_container">
   <canvas id="canvas" width="1920" height="600"></canvas>
 
-  <!-- 🔥 overlay -->
-  <div id="start-overlay"></div>
-
-  <!-- 🔥 text2 -->
+  <!-- TEXT2 -->
   <div id="text2-fix"></div>
 </div>
 
 <script>
-var canvas, stage, exportRoot;
+var canvas, stage, exportRoot, text1Instance;
 
 function init() {
 
@@ -115,7 +101,17 @@ function init() {
 
     stage.addChild(exportRoot);
 
-    var overlay = document.getElementById("start-overlay");
+    // 🔥 FIND TEXT1 (vigtigt)
+    exportRoot.children.forEach(function(child){
+      if(child.constructor && child.constructor.name === "text1"){
+        text1Instance = child;
+
+        // skjul fra start
+        text1Instance.alpha = 0;
+        text1Instance._off = true;
+      }
+    });
+
     var text2Fix = document.getElementById("text2-fix");
 
     createjs.Ticker.framerate = lib.properties.fps;
@@ -126,18 +122,24 @@ function init() {
 
       var frame = exportRoot.currentFrame;
 
-      // 🔁 RESET
+      // 🔁 RESET LOOP
       if(frame < 5){
-        overlay.style.opacity = 1;
+        if(text1Instance){
+          text1Instance.alpha = 0;
+          text1Instance._off = true;
+        }
         text2Fix.style.opacity = 0;
       }
 
-      // 🔥 VIS text1 (fjern overlay EFTER blå er færdig)
+      // 🔥 VIS TEXT1 EFTER BLÅ ER FÆRDIG
       if(frame > 60){
-        overlay.style.opacity = 0;
+        if(text1Instance){
+          text1Instance._off = false;
+          text1Instance.alpha = 1;
+        }
       }
 
-      // 🔥 VIS text2 (sidst)
+      // 🔥 VIS TEXT2 SIDST
       if(frame > 170){
         text2Fix.style.opacity = 1;
       }
@@ -146,6 +148,7 @@ function init() {
 
     exportRoot.gotoAndPlay(0);
 
+    // 🔥 klik på hele banner
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
