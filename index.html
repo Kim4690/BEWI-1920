@@ -1,43 +1,3 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-
-<!-- 🔥 DIN JS SKAL LIGGE HER -->
-<script src="BygTek_20V3.js"></script>
-
-<style>
-body {
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-
-#animation_container {
-  width:100%;
-  max-width:1920px;
-}
-
-canvas {
-  width:100%;
-  height:auto;
-  display:block;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<div id="animation_container">
-  <canvas id="canvas" width="1920" height="600"></canvas>
-</div>
-
 <script>
 var canvas, stage, exportRoot;
 
@@ -48,7 +8,6 @@ function init() {
   var comp = AdobeAn.getComposition("18A209EB448844418D59406351C547B6");
 
   if (!comp) {
-    console.log("venter på Adobe...");
     setTimeout(init, 100);
     return;
   }
@@ -58,32 +17,29 @@ function init() {
 
   var loader = new createjs.LoadQueue(false);
 
+  // 🔥 load billeder korrekt
   loader.addEventListener("fileload", function(evt){
-   if (evt.item.type === "image") {
+    if (evt.item.type === "image") {
 
-  lib.images = lib.images || {};
-  lib.images[evt.item.id] = evt.result;
+      lib.images = lib.images || {};
+      lib.images[evt.item.id] = evt.result;
 
-  // 🔥 DEN HER ER DEN VIGTIGE
-  var img = window.img || {};
-  window.img = img;
-  img[evt.item.id] = evt.result;
-  }
-  });
-
- loader.addEventListener("fileload", function(evt){
-  if (evt.item.type === "image") {
-
-    lib.images = lib.images || {};
-    lib.images[evt.item.id] = evt.result;
-
-    // korrekt global binding
-    var img = window.img || {};
-    window.img = img;
-    img[evt.item.id] = evt.result;
+      var img = window.img || {};
+      window.img = img;
+      img[evt.item.id] = evt.result;
     }
   });
-    
+
+  // 🔥 VIGTIG – først her starter animation
+  loader.addEventListener("complete", function(){
+
+    for (var i = 0; i < lib.ssMetadata.length; i++) {
+      ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
+        images: [lib.images[lib.ssMetadata[i].name]],
+        frames: lib.ssMetadata[i].frames
+      });
+    }
+
     exportRoot = new lib.Untitled1();
     stage = new lib.Stage(canvas);
 
@@ -108,6 +64,3 @@ function init() {
 
 window.onload = init;
 </script>
-
-</body>
-</html>
