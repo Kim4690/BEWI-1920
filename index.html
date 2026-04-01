@@ -35,13 +35,56 @@ canvas {
   display:block;
   cursor:pointer;
 }
+<style>
+body {
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+#animation_container {
+  width:100%;
+  max-width:1920px;
+  position:relative; /* 🔥 vigtigt */
+}
+
+canvas {
+  width:100%;
+  height:auto;
+  display:block;
+  cursor:pointer;
+}
+
+/* 🔥 TEXT2 FIX */
+#text2-fix{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  
+  width:800px;
+  height:130px;
+
+  background:url("images/CachedBmp_5.png") no-repeat center;
+  background-size:contain;
+
+  opacity:0;
+  transition:opacity 0.5s ease;
+  pointer-events:none;
+}
 </style>
+  
 </head>
 
 <body>
 
 <div id="animation_container">
   <canvas id="canvas" width="1920" height="600"></canvas>
+
+  <!-- 🔥 HER -->
+  <div id="text2-fix"></div>
 </div>
 
 <script>
@@ -83,6 +126,21 @@ function init() {
     stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
+    var text2Fix = document.getElementById("text2-fix");
+
+createjs.Ticker.addEventListener("tick", function(){
+
+  var frame = exportRoot.currentFrame;
+
+  if(frame < 5){
+    text2Fix.style.opacity = 0;
+  }
+
+  if(frame > 120){
+    text2Fix.style.opacity = 1;
+  }
+
+});
 
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
