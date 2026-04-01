@@ -59,10 +59,15 @@ function init() {
   var loader = new createjs.LoadQueue(false);
 
   loader.addEventListener("fileload", function(evt){
-    if (evt.item.type === "image") {
-      lib.images = lib.images || {};
-      lib.images[evt.item.id] = evt.result;
-    }
+   if (evt.item.type === "image") {
+
+  lib.images = lib.images || {};
+  lib.images[evt.item.id] = evt.result;
+
+  // 🔥 DEN HER ER DEN VIGTIGE
+  img = img || {};
+  img[evt.item.id] = evt.result;
+}
   });
 
   loader.addEventListener("complete", function(){
