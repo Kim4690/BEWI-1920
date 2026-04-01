@@ -17,18 +17,22 @@ function init() {
   var lib = comp.getLibrary();
   var ss = comp.getSpriteSheet();
 
-  var loader = new createjs.LoadQueue(false);
+  var loader = new createjs.LoadQueue(true); // 🔥 TRUE = vigtigt
 
-  loader.addEventListener("fileload", function(evt){
-    if (evt.item.type === "image") {
-      lib.images = lib.images || {};
-      lib.images[evt.item.id] = evt.result;
-    }
-  });
+  loader.addEventListener("complete", function(evt){
 
-  loader.addEventListener("complete", function(){
+    var queue = evt.target;
 
-    // 🔥 KRITISK – binder sprites korrekt
+    // 🔥 bind ALLE images korrekt
+    lib.images = lib.images || {};
+
+    queue.getItems(true).forEach(function(item){
+      if(item.type === "image"){
+        lib.images[item.id] = item.result;
+      }
+    });
+
+    // 🔥 bind spritesheets
     for (var i = 0; i < lib.ssMetadata.length; i++) {
       ss[lib.ssMetadata[i].name] = new createjs.SpriteSheet({
         images: [lib.images[lib.ssMetadata[i].name]],
@@ -44,9 +48,8 @@ function init() {
     createjs.Ticker.framerate = lib.properties.fps;
     createjs.Ticker.addEventListener("tick", stage);
 
-    exportRoot.gotoAndPlay(90);
+    exportRoot.gotoAndPlay(0);
 
-    // klik
     canvas.onclick = function(){
       window.open(
         "https://bewi.com/loesninger-brancher/tag?lang=da&utm_source=html5&utm_medium=fp&utm_campaign=Tagisolering",
@@ -56,11 +59,8 @@ function init() {
 
   });
 
-  // 🔥 KRITISK – loader ALLE assets korrekt
-  loader.loadManifest([
-    {src:"images/BygTek_20V3_atlas_1.png", id:"BygTek_20V3_atlas_1"},
-    {src:"images/CachedBmp_5.png", id:"CachedBmp_5"}
-  ]);
+  // 🔥 load manifest DIREKTE fra .js
+  loader.loadManifest(lib.properties.manifest);
 }
 
 window.onload = init;
