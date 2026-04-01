@@ -6,13 +6,7 @@
 
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
-<!-- 🔥 KRITISK – MANGLEDE HOS DIG -->
-<script>
-window.createjs = window.createjs || {};
-window.AdobeAn = window.AdobeAn || {};
-</script>
-
-<!-- DIN ANIMATION -->
+<!-- DIN ORIGINAL JS -->
 <script src="BygTek_20V3.js"></script>
 
 <style>
@@ -22,9 +16,11 @@ body {
   justify-content:center;
   align-items:center;
   min-height:100vh;
+  background:#fff;
 }
 
 #animation_container {
+  position:relative; /* 🔥 VIGTIG */
   width:100%;
   max-width:1920px;
 }
@@ -35,29 +31,19 @@ canvas {
   display:block;
   cursor:pointer;
 }
-<style>
-body {
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+
+/* 🔥 START OVERLAY (blå) */
+#start-overlay{
+  position:absolute;
+  inset:0;
+  background:#26485F;
+  z-index:10;
+  pointer-events:none;
+  opacity:1;
+  transition:opacity 0.4s ease;
 }
 
-#animation_container {
-  width:100%;
-  max-width:1920px;
-  position:relative; /* 🔥 vigtigt */
-}
-
-canvas {
-  width:100%;
-  height:auto;
-  display:block;
-  cursor:pointer;
-}
-
-/* 🔥 TEXT2 FIX */
+/* 🔥 TEXT2 FIX (som du allerede har) */
 #text2-fix{
   position:absolute;
   left:50%;
@@ -67,7 +53,7 @@ canvas {
   width:800px;
   height:130px;
 
-  background:url("images/CachedBmp_5.png") no-repeat center;
+  background:url("images/CachedBmp_5.png") no-repeat;
   background-size:contain;
 
   opacity:0;
@@ -75,7 +61,6 @@ canvas {
   pointer-events:none;
 }
 </style>
-  
 </head>
 
 <body>
@@ -83,7 +68,10 @@ canvas {
 <div id="animation_container">
   <canvas id="canvas" width="1920" height="600"></canvas>
 
-  <!-- 🔥 HER -->
+  <!-- 🔥 overlay -->
+  <div id="start-overlay"></div>
+
+  <!-- 🔥 text2 -->
   <div id="text2-fix"></div>
 </div>
 
@@ -126,26 +114,37 @@ function init() {
     stage = new lib.Stage(canvas);
 
     stage.addChild(exportRoot);
+
+    var overlay = document.getElementById("start-overlay");
     var text2Fix = document.getElementById("text2-fix");
 
-createjs.Ticker.addEventListener("tick", function(){
-
-  var frame = exportRoot.currentFrame;
-
-  if(frame < 5){
-    text2Fix.style.opacity = 0;
-  }
-
-  if(frame > 120){
-    text2Fix.style.opacity = 1;
-  }
-
-});
-
     createjs.Ticker.framerate = lib.properties.fps;
-    createjs.Ticker.addEventListener("tick", stage);
 
-    exportRoot.gotoAndPlay(90);
+    createjs.Ticker.addEventListener("tick", function(){
+
+      stage.update();
+
+      var frame = exportRoot.currentFrame;
+
+      // 🔁 RESET
+      if(frame < 5){
+        overlay.style.opacity = 1;
+        text2Fix.style.opacity = 0;
+      }
+
+      // 🔥 VIS text1 (fjern overlay EFTER blå er færdig)
+      if(frame > 60){
+        overlay.style.opacity = 0;
+      }
+
+      // 🔥 VIS text2 (sidst)
+      if(frame > 170){
+        text2Fix.style.opacity = 1;
+      }
+
+    });
+
+    exportRoot.gotoAndPlay(0);
 
     canvas.onclick = function(){
       window.open(
